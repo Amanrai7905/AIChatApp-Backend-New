@@ -1,0 +1,49 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+
+    environment:
+      POSTGRES_DB: AIChatDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: backend-AIChatapi
+
+    ports:
+      - "5000:8080"
+
+    depends_on:
+      - postgres
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__AIChatDBConnection: "Host=postgres;Port=5432;Database=AIChatDB;Username=postgres;Password=postgres123"
+
+  frontend:
+    build:
+      context: D:/React/AIChat-Frontend-PostgreSQL
+      dockerfile: Dockerfile
+
+    container_name: react-AIChatui
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
