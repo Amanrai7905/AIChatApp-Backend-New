@@ -118,15 +118,21 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    Console.WriteLine(builder.Configuration.GetConnectionString("AIChatDBConnection"));
-    //db.Database.Migrate();
+
+    var conn = builder.Configuration.GetConnectionString("AIChatDBConnection");
+
+    Console.WriteLine("========== CONNECTION STRING ==========");
+    Console.WriteLine(conn);
+    Console.WriteLine("======================================");
+
+    db.Database.Migrate();
 }
 
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 //}
 
