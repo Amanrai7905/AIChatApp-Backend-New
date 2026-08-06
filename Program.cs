@@ -118,23 +118,16 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-    var conn = builder.Configuration.GetConnectionString("AIChatDBConnection");
-
-    Console.WriteLine("========== CONNECTION STRING ==========");
-    Console.WriteLine(conn);
-    Console.WriteLine("======================================");
-
     db.Database.Migrate();
 }
 
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-app.UseSwagger();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
     app.UseSwaggerUI();
-//}
+}
 
 app.UseHttpsRedirection();
 app.UseCors("AllowReact");
